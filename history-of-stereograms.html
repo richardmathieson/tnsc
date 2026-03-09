@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The History of Stereograms</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1712;
+    --paper: #f4efe6;
+    --paper-dark: #e8e0d0;
+    --accent: #8b3a3a;
+    --accent-light: #c45c5c;
+    --gold: #b8963e;
+    --gold-light: #d4b86a;
+    --teal: #2a6b6b;
+    --teal-light: #3a9494;
+    --caption: #6b6358;
+    --rule: #c4baa8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 4rem 2rem;
+    background: linear-gradient(180deg, #1a1712 0%, #2c2520 40%, #3d3028 70%, var(--paper) 100%);
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 4px),
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.01) 2px, rgba(255,255,255,0.01) 4px);
+    pointer-events: none;
+  }
+
+  /* Animated dot stereogram pattern in hero */
+  .hero-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.12;
+    pointer-events: none;
+  }
+
+  .hero-pattern canvas { width: 100%; height: 100%; }
+
+  .hero-eyepiece {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.2s forwards;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    font-weight: 900;
+    color: var(--paper);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    max-width: 900px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.4s forwards;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .hero-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(244,239,230,0.5);
+    margin-top: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.7s forwards;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(244,239,230,0.3);
+    font-size: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    animation: pulse 2s ease infinite;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+  }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  section {
+    padding: 5rem 0;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── TYPOGRAPHY ── */
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+  }
+
+  h2 .num {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 2.5rem 0 0.75rem;
+    color: var(--teal);
+  }
+
+  p {
+    margin-bottom: 1.25rem;
+    font-weight: 300;
+  }
+
+  .lead {
+    font-size: 1.2rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--caption);
+    border-left: 3px solid var(--gold);
+    padding-left: 1.25rem;
+    margin: 1.5rem 0 2rem;
+  }
+
+  .divider {
+    width: 60px;
+    height: 3px;
+    background: var(--gold);
+    margin: 1rem 0 2rem;
+    border: none;
+  }
+
+  /* ── FIGURE / IMAGE CARDS ── */
+  .figure-card {
+    margin: 3rem -1rem;
+    background: white;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+
+  .figure-card .visual {
+    width: 100%;
+    aspect-ratio: 16/9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .figure-card .caption {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--rule);
+    background: var(--paper);
+  }
+
+  .figure-card .caption .fig-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .figure-card .caption p {
+    font-size: 0.9rem;
+    color: var(--caption);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* ── STEREOGRAM CANVASES ── */
+  .stereogram-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    image-rendering: pixelated;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    position: relative;
+    padding-left: 3rem;
+    margin: 2rem 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--gold), var(--accent), var(--teal));
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 2.5rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -3rem;
+    top: 0.5rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 2px solid var(--gold);
+    transform: translateX(-5px);
+  }
+
+  .timeline-item .year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .timeline-item h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+
+  .timeline-item p {
+    font-size: 0.95rem;
+    color: var(--caption);
+  }
+
+  /* ── SCIENCE BOX ── */
+  .science-box {
+    background: linear-gradient(135deg, #f9f6f0 0%, #f0ebe0 100%);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--teal);
+    padding: 2rem 2rem 1.5rem;
+    margin: 2.5rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .science-box .box-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .science-box .box-label::before {
+    content: '◈';
+    font-size: 1rem;
+  }
+
+  .science-box p { font-size: 0.95rem; }
+  .science-box p:last-child { margin-bottom: 0; }
+
+  /* ── QUOTE ── */
+  blockquote {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-style: italic;
+    color: var(--accent);
+    border: none;
+    padding: 2rem 0;
+    margin: 2rem 0;
+    text-align: center;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  blockquote::before {
+    content: '"';
+    font-size: 5rem;
+    position: absolute;
+    top: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--gold-light);
+    opacity: 0.4;
+    font-family: 'Playfair Display', serif;
+  }
+
+  blockquote cite {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-style: normal;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--caption);
+    margin-top: 1rem;
+  }
+
+  /* ── REFERENCES ── */
+  .references {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 4rem 0;
+  }
+
+  .references h2 { color: var(--paper); }
+  .references .divider { background: var(--gold-light); }
+
+  .ref-list {
+    list-style: none;
+    counter-reset: ref;
+  }
+
+  .ref-list li {
+    counter-increment: ref;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(244,239,230,0.1);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(244,239,230,0.7);
+    padding-left: 2.5rem;
+    position: relative;
+  }
+
+  .ref-list li::before {
+    content: '[' counter(ref) ']';
+    position: absolute;
+    left: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--gold-light);
+  }
+
+  .ref-list li em { color: var(--paper); font-style: italic; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--caption);
+    background: var(--paper-dark);
+  }
+
+  /* ── INTERACTIVE STEREOGRAM ── */
+  .interactive-area {
+    background: white;
+    border: 1px solid var(--rule);
+    padding: 1.5rem;
+    margin: 2.5rem 0;
+    border-radius: 4px;
+  }
+
+  .interactive-area .instructions {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .stereo-pair {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .stereo-pair canvas {
+    image-rendering: pixelated;
+    border: 1px solid var(--rule);
+  }
+
+  /* ── HOW-TO VIEW BOX ── */
+  .how-to-view {
+    background: linear-gradient(135deg, #2a6b6b10 0%, #2a6b6b08 100%);
+    border: 2px dashed var(--teal);
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 2rem 0;
+    text-align: center;
+  }
+
+  .how-to-view h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--teal);
+    margin-bottom: 1rem;
+  }
+
+  .how-to-view .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .how-to-view .step {
+    text-align: center;
+  }
+
+  .how-to-view .step .step-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--teal);
+    color: white;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.75rem;
+  }
+
+  .how-to-view .step p {
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .container { padding: 0 1.25rem; }
+    section { padding: 3rem 0; }
+    .figure-card { margin: 2rem -0.5rem; }
+    .science-box { padding: 1.25rem; }
+    .stereo-pair { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════ HERO ════════════════════ -->
+<header class="hero">
+  <canvas class="hero-pattern" id="heroPattern"></canvas>
+
+  <svg class="hero-eyepiece" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="35" cy="60" r="28" stroke="#d4b86a" stroke-width="2" fill="none" opacity="0.6"/>
+    <circle cx="85" cy="60" r="28" stroke="#d4b86a" stroke-width="2" fill="none" opacity="0.6"/>
+    <line x1="63" y1="60" x2="57" y2="60" stroke="#d4b86a" stroke-width="2" opacity="0.6"/>
+    <line x1="7" y1="60" x2="2" y2="55" stroke="#d4b86a" stroke-width="1.5" opacity="0.4"/>
+    <line x1="113" y1="60" x2="118" y2="55" stroke="#d4b86a" stroke-width="1.5" opacity="0.4"/>
+  </svg>
+
+  <h1>The History of <em>Stereograms</em></h1>
+  <p class="hero-sub">Depth from Flatness · The Science of Binocular Vision</p>
+
+  <div class="scroll-hint">↓ scroll to explore</div>
+</header>
+
+<!-- ════════════════════ INTRO ════════════════════ -->
+<section>
+  <div class="container">
+    <h2><span class="num">Chapter I</span>The Illusion of Depth</h2>
+    <hr class="divider">
+    <p class="lead">For nearly two centuries, scientists, artists, and hobbyists have been fascinated by the ability to trick the human brain into perceiving three dimensions from flat, two-dimensional images.</p>
+
+    <p>A <strong>stereogram</strong> is any image or pair of images designed to create the perception of three-dimensional depth. The term encompasses everything from Victorian-era paired photographs viewed through wooden stereoscopes to the wildly popular "Magic Eye" autostereograms of the 1990s.</p>
+
+    <p>The story of stereograms is really the story of our understanding of human vision itself — how two slightly different images, one from each eye, are fused by the brain into a single, depth-rich experience of the world.</p>
+
+    <div class="science-box">
+      <div class="box-label">The Science</div>
+      <p><strong>Binocular disparity</strong> is the fundamental principle behind all stereograms. Because your eyes are separated by roughly 6.3 cm (about 2.5 inches), each eye receives a slightly different image of the world. Your visual cortex — specifically, neurons in area V1 — detects these small differences (disparities) and computes depth from them. This process is called <strong>stereopsis</strong>.</p>
+      <p>Stereograms exploit this mechanism by presenting carefully controlled disparity to each eye, fooling the brain into seeing depth where none physically exists.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ ORIGINS ════════════════════ -->
+<section>
+  <div class="container">
+    <h2><span class="num">Chapter II</span>Origins: Wheatstone & Brewster</h2>
+    <hr class="divider">
+
+    <p>The scientific study of stereoscopic vision began in earnest in 1838 when <strong>Sir Charles Wheatstone</strong>, an English physicist, presented his research to the Royal Society of London. Wheatstone had constructed the first <strong>stereoscope</strong> — a device using mirrors to present different drawings to each eye, demonstrating that binocular disparity alone was sufficient to create a vivid illusion of depth.</p>
+
+    <p>Wheatstone's insight was profound. Before his work, depth perception was generally attributed to monocular cues like perspective, shading, and occlusion. He proved that the brain had a dedicated mechanism for extracting depth from the slight differences between the two eyes' views.</p>
+
+    <div class="figure-card">
+      <div class="visual" style="background: #f9f6f0;">
+        <canvas id="wheatstoneDemo" class="stereogram-canvas"></canvas>
+      </div>
+      <div class="caption">
+        <span class="fig-label">Figure 1 — Stereo Pair (Cross-eyed viewing)</span>
+        <p>A simple stereo pair of geometric shapes. Cross your eyes until the two images overlap to perceive depth — the shapes will appear to float at different distances.</p>
+      </div>
+    </div>
+
+    <p>In 1849, Scottish physicist <strong>Sir David Brewster</strong> improved on Wheatstone's design with the lenticular stereoscope, using lenses instead of mirrors. Brewster's design was smaller, more practical, and cheaper to produce. When it debuted at the Great Exhibition of 1851 in London, it became an overnight sensation.</p>
+
+    <p>By the mid-1850s, the stereoscope was a standard piece of parlour furniture in affluent homes across Europe and America. Companies like the London Stereoscopic Company boasted catalogues of over 100,000 stereo photographs.</p>
+
+    <blockquote>
+      No home without a stereoscope.
+      <cite>— Advertising slogan, London Stereoscopic Company, 1856</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ════════════════════ SCIENCE DEEP DIVE ════════════════════ -->
+<section>
+  <div class="container">
+    <h2><span class="num">Chapter III</span>The Science of Seeing in 3D</h2>
+    <hr class="divider">
+    <p class="lead">Understanding stereograms requires understanding how the visual brain constructs the experience of depth from two flat retinal images.</p>
+
+    <h3>Binocular Disparity & Fusion</h3>
+    <p>When you fixate on an object, corresponding points on your two retinas receive light from the same location in space. Objects nearer or farther than your fixation point project to <strong>non-corresponding</strong> (disparate) retinal locations. The magnitude and direction of this disparity encodes relative depth.</p>
+
+    <p><strong>Crossed disparity</strong> (objects closer than fixation) means the image shifts outward on each retina, while <strong>uncrossed disparity</strong> (objects farther away) shifts it inward. Your brain's fusional mechanisms combine these disparate images into a single percept with vivid depth.</p>
+
+    <div class="science-box">
+      <div class="box-label">Neuroscience</div>
+      <p>In 1967, Horace Barlow, Colin Blakemore, and Jack Pettigrew discovered <strong>binocular disparity-tuned neurons</strong> in the cat visual cortex. These neurons respond selectively to specific amounts of disparity, essentially acting as depth detectors. Similar neurons were later found in primate V1 and V2 areas. Nobel laureates David Hubel and Torsten Wiesel's work on cortical organisation helped explain how these disparity signals are processed hierarchically.</p>
+    </div>
+
+    <h3>Panum's Fusional Area</h3>
+    <p>There is a limited range of disparities your brain can fuse into a single image — known as <strong>Panum's fusional area</strong>. Beyond this range, you see double (diplopia). Stereogram designers must keep their depth maps within this fusional range for the illusion to work.</p>
+
+    <h3>Vergence Eye Movements</h3>
+    <p>To view stereograms, particularly autostereograms, you must decouple two systems that are normally linked: <strong>vergence</strong> (the inward or outward rotation of the eyes) and <strong>accommodation</strong> (the focusing of the lens). Normally, when you converge your eyes on a near object, your lenses also focus near. Autostereograms require you to converge at a different distance from the focal plane — which is why many people find them difficult at first.</p>
+
+    <div class="figure-card">
+      <div class="visual" style="background: #1a1712;">
+        <canvas id="rdsDemoCanvas" class="stereogram-canvas"></canvas>
+      </div>
+      <div class="caption">
+        <span class="fig-label">Figure 2 — Random Dot Stereogram (Cross-eyed viewing)</span>
+        <p>A random dot stereogram pair in the style of Béla Julesz. Cross your eyes to fuse the pair — a raised square region should appear to float in front of the background. This demonstrates that stereopsis works without any monocular depth cues.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ JULESZ ════════════════════ -->
+<section>
+  <div class="container">
+    <h2><span class="num">Chapter IV</span>Julesz & Random Dot Stereograms</h2>
+    <hr class="divider">
+
+    <p>In 1959, Hungarian-American visual neuroscientist <strong>Béla Julesz</strong>, working at Bell Laboratories, created one of the most important experiments in vision science. He generated pairs of random dot patterns — essentially visual noise — where a region in one image was shifted horizontally relative to the other. When viewed stereoscopically, a shape popped out in vivid 3D.</p>
+
+    <p>These <strong>random dot stereograms</strong> (RDS) were revolutionary because they proved that stereoscopic depth perception does <em>not</em> require recognisable objects or monocular depth cues. Each image alone looked like meaningless static. Only when the brain combined both images did the hidden shape emerge.</p>
+
+    <div class="science-box">
+      <div class="box-label">Why It Mattered</div>
+      <p>Before Julesz, many researchers believed that stereopsis was a "late" process — that the brain first recognised objects in each eye's image and then matched them. Julesz's random dot stereograms proved that stereopsis is an <strong>early, pre-attentive</strong> process. The visual system can extract depth from pure disparity information before any object recognition occurs. This was published in his landmark 1971 book, <em>Foundations of Cyclopean Perception</em>.</p>
+    </div>
+
+    <p>Julesz introduced the concept of <strong>cyclopean perception</strong> — the idea that the brain constructs an internal representation as if seen from a single, central "cyclopean eye," after binocular fusion has already occurred. His work influenced decades of research in computational vision and directly inspired the autostereograms that would follow.</p>
+  </div>
+</section>
+
+<!-- ════════════════════ AUTOSTEREOGRAMS ════════════════════ -->
+<section>
+  <div class="container">
+    <h2><span class="num">Chapter V</span>The Rise of the Autostereogram</h2>
+    <hr class="divider">
+
+    <p>The leap from paired stereograms to <strong>single-image stereograms</strong> (SIS) came through the work of several researchers in the late 1970s and 1980s.</p>
+
+    <p>In 1979, Christopher Tyler, a student of Julesz, along with programmer Maureen Clarke, created the first <strong>single-image random dot stereogram</strong> — now commonly called an <strong>autostereogram</strong>. Rather than requiring two separate images, Tyler embedded the depth information within a single image using carefully computed horizontal repetitions of a random dot pattern.</p>
+
+    <p>The core principle is elegant: a repeating pattern is subtly adjusted so that when your eyes converge behind the image plane (divergent or "wall-eyed" viewing), corresponding elements in adjacent repetitions fall on matching retinal points, creating perceived depth shifts.</p>
+
+    <div class="figure-card">
+      <div class="visual" style="background: #0d0d12;">
+        <canvas id="autostereogramCanvas" class="stereogram-canvas"></canvas>
+      </div>
+      <div class="caption">
+        <span class="fig-label">Figure 3 — Single-Image Autostereogram</span>
+        <p>A generated autostereogram containing a hidden 3D shape (a raised diamond/torus). Relax your eyes and look "through" the image as if focusing on something behind your screen. Guide dots are placed along the top edge.</p>
+      </div>
+    </div>
+
+    <div class="how-to-view">
+      <h4>How to View Autostereograms</h4>
+      <p>It takes practice! Here's the most common technique:</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <p>Hold the image close to your face, almost touching your nose</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <p>Relax your eyes completely — let them go "soft focus"</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <p>Slowly move the image away, keeping your eyes relaxed and unfocused</p>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <p>A 3D shape should gradually emerge from the pattern. Hold steady!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ MAGIC EYE ERA ════════════════════ -->
+<section>
+  <div class="container">
+    <h2><span class="num">Chapter VI</span>The Magic Eye Phenomenon</h2>
+    <hr class="divider">
+
+    <p>In 1991, American engineer Tom Baccei and artist Cheri Smith, through their company N.E. Thing Enterprises, began producing full-colour autostereograms using textured, visually appealing patterns instead of random dots. They branded these <strong>"Magic Eye"</strong> images.</p>
+
+    <p>The first <em>Magic Eye</em> book was published in 1993 and became a cultural juggernaut. It spent 14 weeks at the top of the <em>New York Times</em> bestseller list. Three sequels followed in rapid succession, and collectively the series sold tens of millions of copies worldwide.</p>
+
+    <p>Magic Eye images appeared everywhere — in newspapers, shopping malls, posters, and even on the television series <em>Seinfeld</em>, where a famous 1995 episode depicted the character Mr. Pitt struggling to see a hidden 3D image (a common and relatable experience).</p>
+
+    <blockquote>
+      It's a sailboat!
+      <cite>— Mallrats (1995), Kevin Smith</cite>
+    </blockquote>
+
+    <p>The craze faded by the late 1990s, but Magic Eye remains an enduring piece of pop culture nostalgia, and the company continues to produce content today.</p>
+  </div>
+</section>
+
+<!-- ════════════════════ TIMELINE ════════════════════ -->
+<section>
+  <div class="container">
+    <h2><span class="num">Chapter VII</span>A Timeline of Stereoscopy</h2>
+    <hr class="divider">
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <span class="year">c. 300 BC</span>
+        <h4>Euclid's Optics</h4>
+        <p>Euclid notes that each eye sees a slightly different portion of an object, the earliest known observation of binocular disparity.</p>
+      </div>
+      <div class="timeline-item">
+        <span class="year">1838</span>
+        <h4>Wheatstone's Stereoscope</h4>
+        <p>Sir Charles Wheatstone presents the mirror stereoscope to the Royal Society, proving that binocular disparity creates depth perception.</p>
+      </div>
+      <div class="timeline-item">
+        <span class="year">1849</span>
+        <h4>Brewster's Lenticular Stereoscope</h4>
+        <p>Sir David Brewster designs a compact, lens-based stereoscope that becomes commercially viable.</p>
+      </div>
+      <div class="timeline-item">
+        <span class="year">1851</span>
+        <h4>The Great Exhibition</h4>
+        <p>Queen Victoria is fascinated by Brewster's stereoscope at the Crystal Palace, sparking a Victorian craze.</p>
+      </div>
+      <div class="timeline-item">
+        <span class="year">1858</span>
+        <h4>Joseph D'Almeida</h4>
+        <p>Demonstrates the first anaglyph (red-blue) 3D projections in Paris, foreshadowing 3D cinema.</p>
+      </div>
+      <div class="timeline-item">
+        <span class="year">1939</span>
+        <h4>View-Master</h4>
+        <p>William Gruber introduces the View-Master at the New York World's Fair, becoming an iconic 20th-century stereoscopic toy.</p>
+      </div>
+      <div class="timeline-item">
+        <span class="year">1959</span>
+        <h4>Julesz's Random Dot Stereograms</h4>
+        <p>Béla Julesz creates random dot stereograms at Bell Labs, proving stereopsis works without monocular cues.</p>
+      </div>
+      <div class="timeline-item">
+        <span class="year">1979</span>
+        <h4>First Autostereogram</h4>
+        <p>Christopher Tyler and Maureen Clarke produce the first single-image random dot stereogram.</p>
+      </div>
+      <div class="timeline-item">
+        <span class="year">1991–1993</span>
+        <h4>Magic Eye</h4>
+        <p>N.E. Thing Enterprises launches Magic Eye, igniting a worldwide autostereogram craze.</p>
+      </div>
+      <div class="timeline-item">
+        <span class="year">2010s–present</span>
+        <h4>VR & Lenticular Displays</h4>
+        <p>Modern virtual reality headsets like the Oculus Rift and autostereoscopic (glasses-free) displays carry the stereoscopic tradition into the digital age.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ MODERN ════════════════════ -->
+<section>
+  <div class="container">
+    <h2><span class="num">Chapter VIII</span>Stereograms Today & Beyond</h2>
+    <hr class="divider">
+
+    <p>While the Magic Eye fad has long passed, the principles of stereograms remain deeply relevant. Modern <strong>virtual reality</strong> headsets are, in essence, sophisticated electronic stereoscopes — presenting separate images to each eye with carefully controlled disparity.</p>
+
+    <p><strong>Autostereoscopic displays</strong> (glasses-free 3D screens) use lenticular lenses or parallax barriers to direct different views to each eye, making stereograms an everyday reality on some smartphones and displays.</p>
+
+    <p>In medicine, <strong>stereoscopic vision tests</strong> based on random dot stereograms (like the Randot Stereotest and the TNO test) remain the gold standard for assessing binocular vision in clinical settings. These tests can detect amblyopia ("lazy eye") and strabismus in children, conditions where early intervention is critical.</p>
+
+    <div class="science-box">
+      <div class="box-label">Research Frontier</div>
+      <p>Recent neuroscience research using fMRI and single-cell recording continues to refine our understanding of stereoscopic processing. Studies have revealed that disparity-tuned neurons exist not only in V1 but across a hierarchy of cortical areas (V2, V3, V4, MT/V5), each contributing to different aspects of depth perception — from fine depth discrimination to surface segmentation and 3D object recognition. Computational models inspired by stereograms have also advanced machine stereo vision in robotics and autonomous vehicles.</p>
+    </div>
+
+    <p>Stereograms also remain a vibrant part of recreational mathematics, generative art, and puzzle culture, with online communities sharing algorithmically generated autostereograms and exploring new visual effects.</p>
+  </div>
+</section>
+
+<!-- ════════════════════ REFERENCES ════════════════════ -->
+<div class="references">
+  <section style="opacity:1; transform:none; padding: 0;">
+    <div class="container">
+      <h2><span class="num" style="color: var(--gold-light);">Appendix</span>References & Further Reading</h2>
+      <hr class="divider">
+
+      <ol class="ref-list">
+        <li>Wheatstone, C. (1838). "Contributions to the Physiology of Vision — Part the First." <em>Philosophical Transactions of the Royal Society of London</em>, 128, 371–394.</li>
+        <li>Brewster, D. (1856). <em>The Stereoscope: Its History, Theory, and Construction</em>. London: John Murray.</li>
+        <li>Julesz, B. (1960). "Binocular Depth Perception of Computer-Generated Patterns." <em>Bell System Technical Journal</em>, 39(5), 1125–1162.</li>
+        <li>Julesz, B. (1971). <em>Foundations of Cyclopean Perception</em>. Chicago: University of Chicago Press.</li>
+        <li>Barlow, H.B., Blakemore, C., & Pettigrew, J.D. (1967). "The Neural Mechanism of Binocular Depth Discrimination." <em>Journal of Physiology</em>, 193(2), 327–342.</li>
+        <li>Tyler, C.W. & Clarke, M.B. (1990). "The Autostereogram." <em>SPIE Proceedings</em>, 1256, 182–197.</li>
+        <li>Hubel, D.H. & Wiesel, T.N. (1962). "Receptive Fields, Binocular Interaction and Functional Architecture in the Cat's Visual Cortex." <em>Journal of Physiology</em>, 160(1), 106–154.</li>
+        <li>Howard, I.P. & Rogers, B.J. (2012). <em>Perceiving in Depth, Volume 2: Stereoscopic Vision</em>. Oxford: Oxford University Press.</li>
+        <li>Baccei, T. & Smith, C. (1993). <em>Magic Eye: A New Way of Looking at the World</em>. Kansas City: Andrews McMeel Publishing.</li>
+        <li>Read, J.C.A. & Cumming, B.G. (2007). "Sensors for Impossible Stimuli May Solve the Stereo Correspondence Problem." <em>Nature Neuroscience</em>, 10(10), 1322–1328.</li>
+        <li>Parker, A.J. (2007). "Binocular Depth Perception and the Cerebral Cortex." <em>Nature Reviews Neuroscience</em>, 8, 379–391.</li>
+      </ol>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <p>The History of Stereograms &nbsp;·&nbsp; A visual essay &nbsp;·&nbsp; Published by <a href="index.html" style="color:inherit;">TNSC</a></p>
+</footer>
+
+<!-- ════════════════════ SCRIPTS ════════════════════ -->
+<script>
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('section').forEach(s => observer.observe(s));
+
+// ── HERO DOT PATTERN ──
+(function() {
+  const c = document.getElementById('heroPattern');
+  const ctx = c.getContext('2d');
+  function resize() {
+    c.width = window.innerWidth;
+    c.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function draw() {
+    ctx.clearRect(0, 0, c.width, c.height);
+    const t = Date.now() * 0.0003;
+    const spacing = 18;
+    for (let x = 0; x < c.width; x += spacing) {
+      for (let y = 0; y < c.height; y += spacing) {
+        const wave = Math.sin(x * 0.01 + t) * Math.cos(y * 0.01 + t * 0.7);
+        const r = 1.5 + wave * 1.5;
+        ctx.fillStyle = `rgba(212,184,106,${0.3 + wave * 0.2})`;
+        ctx.beginPath();
+        ctx.arc(x + wave * 3, y + wave * 2, Math.max(0.5, r), 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ── STEREO PAIR (Fig. 1) ──
+(function() {
+  const c = document.getElementById('wheatstoneDemo');
+  const parent = c.parentElement;
+  function setup() {
+    c.width = parent.clientWidth;
+    c.height = parent.clientHeight;
+    const ctx = c.getContext('2d');
+    const w = c.width, h = c.height;
+    const hw = w / 2;
+    const shift = 8;
+
+    ctx.fillStyle = '#f9f6f0';
+    ctx.fillRect(0, 0, w, h);
+
+    // Separator
+    ctx.strokeStyle = '#c4baa8';
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.moveTo(hw, 20); ctx.lineTo(hw, h - 20); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Draw shapes for left & right eye
+    function drawScene(ox, eyeShift) {
+      // Background circle
+      ctx.fillStyle = '#2a6b6b';
+      ctx.beginPath();
+      ctx.arc(ox + 0, h * 0.4, 40, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Mid square
+      ctx.fillStyle = '#b8963e';
+      ctx.fillRect(ox + 30 + eyeShift * 0.5, h * 0.35, 60, 60);
+
+      // Front triangle
+      ctx.fillStyle = '#8b3a3a';
+      ctx.beginPath();
+      ctx.moveTo(ox - 40 + eyeShift, h * 0.65);
+      ctx.lineTo(ox + 0 + eyeShift, h * 0.35);
+      ctx.lineTo(ox + 40 + eyeShift, h * 0.65);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    const cx1 = hw * 0.5;
+    const cx2 = hw + hw * 0.5;
+    drawScene(cx1, -shift);
+    drawScene(cx2, shift);
+
+    // Labels
+    ctx.fillStyle = '#6b6358';
+    ctx.font = '11px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('LEFT', cx1, h - 12);
+    ctx.fillText('RIGHT', cx2, h - 12);
+  }
+  setup();
+  window.addEventListener('resize', setup);
+})();
+
+// ── RANDOM DOT STEREOGRAM (Fig. 2) ──
+(function() {
+  const c = document.getElementById('rdsDemoCanvas');
+  const parent = c.parentElement;
+  function setup() {
+    c.width = parent.clientWidth;
+    c.height = parent.clientHeight;
+    const ctx = c.getContext('2d');
+    const w = c.width, h = c.height;
+    const hw = w / 2;
+    const dotSize = 3;
+    const shift = 6; // disparity in pixels
+
+    ctx.fillStyle = '#0d0d12';
+    ctx.fillRect(0, 0, w, h);
+
+    // Generate random dot field for left image
+    const cols = Math.floor(hw / dotSize);
+    const rows = Math.floor(h / dotSize);
+    const field = [];
+    for (let r = 0; r < rows; r++) {
+      field[r] = [];
+      for (let col = 0; col < cols; col++) {
+        field[r][col] = Math.random() > 0.5 ? 1 : 0;
+      }
+    }
+
+    // Define depth region (central square)
+    const margin = Math.floor(cols * 0.3);
+    const marginY = Math.floor(rows * 0.25);
+
+    // Draw left image
+    for (let r = 0; r < rows; r++) {
+      for (let col = 0; col < cols; col++) {
+        if (field[r][col]) {
+          ctx.fillStyle = `hsl(${180 + Math.random()*20}, 40%, ${55 + Math.random()*15}%)`;
+          ctx.fillRect(col * dotSize, r * dotSize, dotSize - 0.5, dotSize - 0.5);
+        }
+      }
+    }
+
+    // Draw right image (shifted in depth region)
+    const shiftDots = Math.round(shift / dotSize);
+    for (let r = 0; r < rows; r++) {
+      for (let col = 0; col < cols; col++) {
+        const inRegion = col >= margin && col < cols - margin && r >= marginY && r < rows - marginY;
+        const srcCol = inRegion ? Math.min(col + shiftDots, cols - 1) : col;
+        if (field[r][srcCol]) {
+          ctx.fillStyle = `hsl(${180 + Math.random()*20}, 40%, ${55 + Math.random()*15}%)`;
+          ctx.fillRect(hw + col * dotSize, r * dotSize, dotSize - 0.5, dotSize - 0.5);
+        }
+      }
+    }
+
+    // Separator
+    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.moveTo(hw, 10); ctx.lineTo(hw, h - 10); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Labels
+    ctx.fillStyle = 'rgba(255,255,255,0.35)';
+    ctx.font = '10px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('LEFT', hw * 0.5, h - 8);
+    ctx.fillText('RIGHT', hw + hw * 0.5, h - 8);
+  }
+  setup();
+  window.addEventListener('resize', setup);
+})();
+
+// ── AUTOSTEREOGRAM (Fig. 3) ──
+(function() {
+  const c = document.getElementById('autostereogramCanvas');
+  const parent = c.parentElement;
+  function setup() {
+    const W = parent.clientWidth;
+    const H = parent.clientHeight;
+    c.width = W;
+    c.height = H;
+    const ctx = c.getContext('2d');
+
+    const strip = 100; // repeat width
+    const maxDepth = 12;
+
+    // Depth map: raised diamond shape in center
+    function getDepth(x, y) {
+      const cx = W / 2, cy = H / 2;
+      const dx = Math.abs(x - cx) / (W * 0.2);
+      const dy = Math.abs(y - cy) / (H * 0.25);
+      const d = dx + dy;
+      if (d < 1) return Math.floor((1 - d) * maxDepth);
+      return 0;
+    }
+
+    // Generate base random strip
+    const imgData = ctx.createImageData(W, H);
+    const data = imgData.data;
+
+    // Color palette
+    const palette = [];
+    for (let i = 0; i < 256; i++) {
+      const hue = (i * 7) % 360;
+      palette.push(hslToRgb(hue / 360, 0.5, 0.45));
+    }
+
+    // Row-by-row autostereogram generation
+    for (let y = 0; y < H; y++) {
+      const row = new Int32Array(W);
+      // Generate random first strip
+      for (let x = 0; x < strip; x++) {
+        row[x] = Math.floor(Math.random() * 256);
+      }
+      // Propagate with depth shifts
+      for (let x = strip; x < W; x++) {
+        const depth = getDepth(x, y);
+        const src = x - strip + depth;
+        if (src >= 0 && src < W) {
+          row[x] = row[src];
+        } else {
+          row[x] = Math.floor(Math.random() * 256);
+        }
+      }
+      // Write pixels
+      for (let x = 0; x < W; x++) {
+        const idx = (y * W + x) * 4;
+        const col = palette[row[x] % 256];
+        data[idx] = col[0];
+        data[idx + 1] = col[1];
+        data[idx + 2] = col[2];
+        data[idx + 3] = 255;
+      }
+    }
+
+    ctx.putImageData(imgData, 0, 0);
+
+    // Guide dots at top
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    for (let x = strip / 2; x < W; x += strip) {
+      ctx.beginPath();
+      ctx.arc(x, 10, 3, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function hslToRgb(h, s, l) {
+    let r, g, b;
+    if (s === 0) { r = g = b = l; }
+    else {
+      const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+      const p = 2 * l - q;
+      r = hueToRgb(p, q, h + 1/3);
+      g = hueToRgb(p, q, h);
+      b = hueToRgb(p, q, h - 1/3);
+    }
+    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+  }
+
+  function hueToRgb(p, q, t) {
+    if (t < 0) t += 1; if (t > 1) t -= 1;
+    if (t < 1/6) return p + (q - p) * 6 * t;
+    if (t < 1/2) return q;
+    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+    return p;
+  }
+
+  setup();
+  window.addEventListener('resize', setup);
+})();
+</script>
+</body>
+</html>
